@@ -1,0 +1,6 @@
+from mrglib import Project, User
+
+def test_find_project():
+    u = User.User('testuser','testp@ss4676')
+    retcode = u.find_project('testuser')
+    assert (retcode == 0)
