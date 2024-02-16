@@ -6,7 +6,7 @@ setup(
     version='0.1.0',
     license='MIT',
     url='https://github.com/STEELISI/mrglib',
-    download_url='',
+    download_url='https://github.com/STEELISI/mrglib/archive/refs/tags/0.1.0.tar.gz',
     description='Library wrapping many mrg functionalities',
     author='Jelena Mirkovic, USC/ISI, mirkovic@isi.edu',
     install_requires=[],
