@@ -158,7 +158,6 @@ class Experiment:
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh_client.connect(node, username=username, pkey=private_key)
         stdin, stdout, stderr = ssh_client.exec_command(cmd)
-        for line in stdout.readlines():
-            print("Output ", line)
         ssh_client.close()
+        return (stdin, stdout, stderr)
         
