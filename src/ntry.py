@@ -1,0 +1,26 @@
+from mrglib import User, Experiment, Manager
+import time
+u = User.User('shareaa','89ebb3da')
+retcode = u.login()
+print("Logged in ", retcode, " username ", u.username)
+m = Manager.Manager()
+proj = m.create_project('testshare', 'this is a test',  u.username)
+exp = m.create_experiment('testexp', proj.name, 'test description 2')
+
+exp = m.find_experiment('testexp', proj.name)
+while exp == None:
+    exp = u.find_experiment('testexp33', proj.name)
+    print("Retcode ", retcode)
+    time.sleep(1)
+print("Experiment created")
+rev=exp.set_model("/share/education/synflood/synflood.model")
+print("Revision ", rev)
+time.sleep(10)                                                                                                                                                
+exp.lease()                                                                                                                                                   
+print("Leased resources")                                                                                                                                     
+exp.allocate()                                                                                                                                                
+exp.attach()                                                                                                                                                  
+exp.exec_on_node("shareaa", "client", "ping -c 10 server")
+exp.deallocate()
+exp.relinquish()
+exp.delete()

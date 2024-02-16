@@ -45,11 +45,21 @@ class Manager:
         else:
             return None
 
-    def create_project(self, name, description, organization, category, creator):
-        proc = subprocess.run(['mrg', 'new', 'project',  description, organization, category], check=True)
+    def create_project(self, name, description, creator, organization=None, category='Research', mode='Public'):
+        cmd = ['mrg', 'new', 'project', name, description]
+        if organization != None:
+            cmd.extend(['--organization', organization])
+        if category != None:
+            cmd.extend(['--category', category])
+        if mode != None:
+            cmd.extend(['--mode', mode])
+        print("Cmd is ", cmd)
+        proc = subprocess.run(cmd, check=True)
         if (proc.returncode == 0):
-            self.__init__(name, description, organization, category, username)
-        return proc.returncode
+            proj=Project.Project(name, description, creator, organization, category, mode)
+            return proj
+        else:
+            return None
 
     def create_experiment(self, name, project, description=None):
         if (self.find_project(project) == 0):
