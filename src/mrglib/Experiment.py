@@ -51,7 +51,8 @@ class Experiment:
             while retcode != 0:
                 proc = subprocess.run(['mrg', 'show', 'realization',
                                        realization + "." + self.name
-                                       + "." + self.project])
+                                       + "." + self.project], stdout=subprocess.DEVNULL,
+                                      stderr=subprocess.STDOUT)
                 retcode = proc.returncode
                 time.sleep(1)
             self.realization = realization

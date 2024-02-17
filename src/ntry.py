@@ -23,7 +23,7 @@ exp.allocate()
 exp.attach()
 time.sleep(60)
 print("Slept and now will try")
-(lines, elines) = exp.exec_on_node(username, "client", "ping -c 3 serverx")
+(lines, elines) = exp.exec_on_node(username, "client", "ping -c 3 server")
 for line in lines:
     print("Output is ", line)
 exp.deallocate()
