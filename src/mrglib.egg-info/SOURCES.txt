@@ -1,6 +1,5 @@
 LICENSE.txt
 README.md
-pyproject.toml
 setup.cfg
 setup.py
 src/mrglib/Experiment.py

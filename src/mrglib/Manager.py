@@ -1,4 +1,4 @@
-import re, json, subprocess
+import re, json, subprocess, time
 from mrglib import Experiment, Project
 
 class Manager:
@@ -57,10 +57,19 @@ class Manager:
         else:
             return None
 
-    def create_experiment(self, name, project, description=None):
+    def create_experiment(self, name, project, description=None, wait=True):
         if (self.find_project(project) != None):
-            proc = subprocess.run(['mrg', 'new', 'experiment', name + '.' + project, description], check=True)            
-            return proc.returncode == 0
+            proc = subprocess.run(['mrg', 'new', 'experiment', name + '.' + project, description], check=True)
+            if not wait: 
+                ex = Experiment.Experiment(name, project, 0)
+                return ex
+            else:
+                ex = None
+                while ex == None:
+                    ex = self.find_experiment(name, project)
+                    time.sleep(1)
+                return ex
+
         else:
             print("No such project ", project)
             return False
