@@ -23,25 +23,21 @@ class Manager:
             return None
 
     def find_experiment(self, name, project):
-        proc = subprocess.run(['mrg', 'show', 'experiment', name + "." + project], capture_output=True)
-        if proc.returncode == 0:
-            lines = proc.stdout.decode().splitlines()
-            flag = False
+        proc = subprocess.run(['mrg', 'show', 'experiment', name + "." + project, '-j'], capture_output=True)
+        if proc.returncode == 0:            
+            data=json.loads(proc.stdout.decode())
             real = None
             revision = 0
-            for l in lines:
-                if re.search(r'Realizations', l) != None:
-                    index = lines.index(l)
-                    nextline = lines[index+3]
-                    revision = nextline.split()[0]                    
-                    fullname = nextline.split()[1]
-                    real = fullname.split('.')[0]
-                    break
+            if "models" in data["experiment"]:
+                for rev in data["experiment"]["models"]:
+                    if "realization" in data["experiment"]["models"][rev]:
+                        real=data["experiment"]["models"][rev]["realization"]
+                        revision=rev
+                        break
             ex = Experiment.Experiment(name, project, 0)
             ex.realization = real
             ex.revision = revision
             return ex
-                
         else:
             return None
 
@@ -62,9 +58,13 @@ class Manager:
             return None
 
     def create_experiment(self, name, project, description=None):
-        if (self.find_project(project) == 0):
-            proc = subprocess.run(['mrg', 'new', 'experiment', name + '.' + project, description], check=True)
-        return proc.returncode
+        if (self.find_project(project) != None):
+            proc = subprocess.run(['mrg', 'new', 'experiment', name + '.' + project, description], check=True)            
+            return proc.returncode == 0
+        else:
+            print("No such project ", project)
+            return False
+        
 
 
     

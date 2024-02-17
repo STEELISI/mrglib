@@ -1,7 +1,7 @@
 import subprocess
 
 class Project:
-    def __init__(self, name, description, creator, organization, category, mode):
+    def __init__(self, name, description, creator, organization=None, category='Research', mode='Public'):
         self.name=name
         self.description = description
         self.creator = creator

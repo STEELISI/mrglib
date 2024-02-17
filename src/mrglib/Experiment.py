@@ -154,10 +154,12 @@ class Experiment:
     # Execute command on node using SSH
     def exec_on_node(self, username, node, cmd):
         ssh_client = paramiko.SSHClient()
-        private_key = paramiko.RSAKey.from_private_key_file("/home/testuser/.ssh/merge_key")
+        private_key = paramiko.RSAKey.from_private_key_file("/home/shareaa/.ssh/merge_key") #("/home/"+username+"/.ssh/merge_key")
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh_client.connect(node, username=username, pkey=private_key)
-        stdin, stdout, stderr = ssh_client.exec_command(cmd)
+        (stdin, stdout, stderr) = ssh_client.exec_command(cmd)
+        lines = stdout.readlines()
+        elines = stderr.readlines()
         ssh_client.close()
-        return (stdin, stdout, stderr)
+        return (lines, elines)
         
